@@ -54,7 +54,6 @@ module TSOS {
                                   "cls",
                                   "- Clears the screen and resets the cursor position.");
             this.commandList[this.commandList.length] = sc;
-
             // man <topic>
             sc = new ShellCommand(this.shellMan,
                                   "man",
@@ -234,10 +233,37 @@ module TSOS {
             if (args.length > 0) {
                 var topic = args[0];
                 switch (topic) {
+                     // TODO: Make descriptive MANual page entries for the the rest of the shell commands here.
                     case "help":
                         _StdOut.putText("Help displays a list of (hopefully) valid commands.");
                         break;
-                    // TODO: Make descriptive MANual page entries for the the rest of the shell commands here.
+                    case "shutdown":
+                        _StdOut.putText("Shutsdown the virtual os.");
+                        break;
+                    case "ver":
+                         _StdOut.putText("Display the version.");
+                         break;
+                    case "cls":
+                        _StdOut.Text("Clears the screen.");
+                        break;
+                    case "curse":
+                        _StdOut.Text("Says mean things to you.");
+                        break;
+                    case "Apology":
+                        _StdOut.Text("Apologyises for being so mean.");
+                        break;
+                    case "InvalidCommand":
+                        _StdOut.Text("Tells you when your commands are well... invalid");
+                        break;
+                    case "Trace":
+                        _StdOut.Text("Turns the trace on or off.");
+                        break;
+                    case "Rot13":
+                        _StdOut.Text("Does rot13 obfuscation on <string>.");
+                        break;
+                    case "Prompt":
+                        _StdOut.Text("Sets the prompt.");
+                        break;
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
                 }
@@ -285,6 +311,13 @@ module TSOS {
             } else {
                 _StdOut.putText("Usage: prompt <string>  Please supply a string.");
             }
+        }
+
+        public shellDate(args) {
+            var numDay = Date.getDay();
+            var numMonth = Date.getMonth();
+            var numYear = Date.getYear();
+            _StdOut.putText("The Date is " + numMonth + "/" + numDay + "/" + numYear);
         }
 
     }
