@@ -34,7 +34,7 @@ module TSOS {
             // ver
             sc = new ShellCommand(this.shellVer,
                                   "ver",
-                                  "Purple Flowers");
+                                  "- Displays the current os version");
             this.commandList[this.commandList.length] = sc;
 
             // help
@@ -82,12 +82,17 @@ module TSOS {
             // kill <id> - kills the specified process id.
             sc = new ShellCommand(this.shellDate,
                 "date",
-                "Returns the date.");
+                " - Returns the date.");
             this.commandList[this.commandList.length] = sc;
 
             sc = new ShellCommand(this.shellWhereami,
                 "whereami",
-                "Geolocation.");
+                " - Geolocation.");
+            this.commandList[this.commandList.length] = sc;
+
+            sc = new ShellCommand(this.shellBackgroundColor,
+                "backgroundcolor",
+                " - changes background color");
             this.commandList[this.commandList.length] = sc;
             //
             // Display the initial prompt.
@@ -249,7 +254,7 @@ module TSOS {
                         _StdOut.putText("Shutsdown the virtual os.");
                         break;
                     case "ver":
-                         _StdOut.putText("Display the version.");
+                         _StdOut.putText("Displays the version.");
                          break;
                     case "cls":
                         _StdOut.Text("Clears the screen.");
@@ -271,6 +276,12 @@ module TSOS {
                         break;
                     case "Prompt":
                         _StdOut.Text("Sets the prompt.");
+                        break;
+                    case "date":
+                        _StdOut.Text("Displays the date.");
+                        break;
+                    case "whereami":
+                        _StdOut.Text("Displays user location.");
                         break;
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
@@ -332,8 +343,13 @@ module TSOS {
         }
 
         public shellWhereami(args) {
-            _StdOut.putText("What do I look like Google Maps??")
+            _StdOut.putText("What do I look like Google Maps??");
 
+        }
+
+        public shellBackgroundColor(args) {
+            _StdOut.putText("going emo");
+            document.body.style.background= "black";
         }
 
     }
