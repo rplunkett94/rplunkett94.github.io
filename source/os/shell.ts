@@ -34,7 +34,7 @@ module TSOS {
             // ver
             sc = new ShellCommand(this.shellVer,
                                   "ver",
-                                  "- Displays the current version data.");
+                                  "Purple Flowers");
             this.commandList[this.commandList.length] = sc;
 
             // help
@@ -80,7 +80,15 @@ module TSOS {
 
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
+            sc = new ShellCommand(this.shellDate,
+                "date",
+                "Returns the date.");
+            this.commandList[this.commandList.length] = sc;
 
+            sc = new ShellCommand(this.shellWhereami,
+                "whereami",
+                "Geolocation.");
+            this.commandList[this.commandList.length] = sc;
             //
             // Display the initial prompt.
             this.putPrompt();
@@ -314,10 +322,18 @@ module TSOS {
         }
 
         public shellDate(args) {
-            var numDay = Date.getDay();
-            var numMonth = Date.getMonth();
-            var numYear = Date.getYear();
-            _StdOut.putText("The Date is " + numMonth + "/" + numDay + "/" + numYear);
+            var d = new Date();
+            var numDate = d.getDate();
+            var numMonth = d.getMonth();
+            var numYear = d.getFullYear();
+            _StdOut.putText(numMonth);
+            _StdOut.putText("The Date is " + (numMonth + 1) + "/" + numDate + "/" + numYear);
+
+        }
+
+        public shellWhereami(args) {
+            _StdOut.putText("What do I look like Google Maps??")
+
         }
 
     }

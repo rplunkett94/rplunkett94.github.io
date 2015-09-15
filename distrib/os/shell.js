@@ -26,7 +26,7 @@ var TSOS;
             //
             // Load the command list.
             // ver
-            sc = new TSOS.ShellCommand(this.shellVer, "ver", "- Displays the current version data.");
+            sc = new TSOS.ShellCommand(this.shellVer, "ver", "Purple Flowers");
             this.commandList[this.commandList.length] = sc;
             // help
             sc = new TSOS.ShellCommand(this.shellHelp, "help", "- This is the help command. Seek help.");
@@ -51,6 +51,10 @@ var TSOS;
             this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
+            sc = new TSOS.ShellCommand(this.shellDate, "date", "Returns the date.");
+            this.commandList[this.commandList.length] = sc;
+            sc = new TSOS.ShellCommand(this.shellWhereami, "whereami", "Geolocation.");
+            this.commandList[this.commandList.length] = sc;
             //
             // Display the initial prompt.
             this.putPrompt();
@@ -192,10 +196,37 @@ var TSOS;
             if (args.length > 0) {
                 var topic = args[0];
                 switch (topic) {
+                    // TODO: Make descriptive MANual page entries for the the rest of the shell commands here.
                     case "help":
                         _StdOut.putText("Help displays a list of (hopefully) valid commands.");
                         break;
-                    // TODO: Make descriptive MANual page entries for the the rest of the shell commands here.
+                    case "shutdown":
+                        _StdOut.putText("Shutsdown the virtual os.");
+                        break;
+                    case "ver":
+                        _StdOut.putText("Display the version.");
+                        break;
+                    case "cls":
+                        _StdOut.Text("Clears the screen.");
+                        break;
+                    case "curse":
+                        _StdOut.Text("Says mean things to you.");
+                        break;
+                    case "Apology":
+                        _StdOut.Text("Apologyises for being so mean.");
+                        break;
+                    case "InvalidCommand":
+                        _StdOut.Text("Tells you when your commands are well... invalid");
+                        break;
+                    case "Trace":
+                        _StdOut.Text("Turns the trace on or off.");
+                        break;
+                    case "Rot13":
+                        _StdOut.Text("Does rot13 obfuscation on <string>.");
+                        break;
+                    case "Prompt":
+                        _StdOut.Text("Sets the prompt.");
+                        break;
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
                 }
@@ -245,6 +276,17 @@ var TSOS;
             else {
                 _StdOut.putText("Usage: prompt <string>  Please supply a string.");
             }
+        };
+        Shell.prototype.shellDate = function (args) {
+            var d = new Date();
+            var numDate = d.getDate();
+            var numMonth = d.getMonth();
+            var numYear = d.getFullYear();
+            _StdOut.putText(numMonth);
+            _StdOut.putText("The Date is " + (numMonth + 1) + "/" + numDate + "/" + numYear);
+        };
+        Shell.prototype.shellWhereami = function (args) {
+            _StdOut.putText("What do I look like Google Maps??");
         };
         return Shell;
     })();
