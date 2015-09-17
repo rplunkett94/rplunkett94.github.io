@@ -349,7 +349,8 @@ module TSOS {
 
         public shellBackgroundColor(args) {
             _StdOut.putText("going emo");
-            document.body.style.background= "black";
+            document.body.style.background = "black";
+            
         }
 
     }
