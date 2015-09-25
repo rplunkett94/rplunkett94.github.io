@@ -215,7 +215,7 @@ var TSOS;
                         _StdOut.Text("Says mean things to you.");
                         break;
                     case "Apology":
-                        _StdOut.Text("Apologyises for being so mean.");
+                        _StdOut.Text("Apologizes for being so mean.");
                         break;
                     case "InvalidCommand":
                         _StdOut.Text("Tells you when your commands are well... invalid");
@@ -294,7 +294,7 @@ var TSOS;
             _StdOut.putText("The Date is " + (numMonth + 1) + "/" + numDate + "/" + numYear);
         };
         Shell.prototype.shellWhereami = function (args) {
-            _StdOut.putText("What do I look like Google Maps??");
+            _StdOut.putText("What do I look like Google Maps???");
         };
         Shell.prototype.shellBackgroundColor = function (args) {
             _StdOut.putText("going emo");

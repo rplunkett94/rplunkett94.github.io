@@ -263,7 +263,7 @@ module TSOS {
                         _StdOut.Text("Says mean things to you.");
                         break;
                     case "Apology":
-                        _StdOut.Text("Apologyises for being so mean.");
+                        _StdOut.Text("Apologizes for being so mean.");
                         break;
                     case "InvalidCommand":
                         _StdOut.Text("Tells you when your commands are well... invalid");
@@ -343,11 +343,11 @@ module TSOS {
         }
 
         public shellWhereami(args) {
-            _StdOut.putText("What do I look like Google Maps??");
+            _StdOut.putText("What do I look like Google Maps???");
 
         }
 
-        public shellBackgroundColor(args) {
+       public shellBackgroundColor(args) {
             _StdOut.putText("going emo");
             document.body.style.background = "black";
             

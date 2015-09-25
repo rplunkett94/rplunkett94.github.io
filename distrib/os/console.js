@@ -29,6 +29,23 @@ var TSOS;
         Console.prototype.clearScreen = function () {
             _DrawingContext.clearRect(0, 0, _Canvas.width, _Canvas.height);
         };
+        Console.prototype.clearLine = function () {
+            _DrawingContext.clearRect(0, this.currentYPosition - this.currentFontSize, _Canvas.width, this.currentFontSize + 5);
+            this.currentXPosition = 0;
+        };
+        Console.prototype.backspace = function () {
+            var bufferLength = this.buffer.length;
+            var lastChar = bufferLength - 1;
+            var c = TSOS.CanvasTextFunctions.letter(this.buffer.charAt(lastChar));
+            this.buffer = this.buffer.substring(0, lastChar);
+            this.clearLine();
+            this.putText(">" + this.buffer);
+        };
+        Console.prototype.scroll = function () {
+            var data = _DrawingContext.getImageData(0, 0, _Canvas.width, _Canvas.height);
+            _Canvas.height += 100;
+            _DrawingContext.putImageData(data, 0, 0);
+        };
         Console.prototype.resetXY = function () {
             this.currentXPosition = 0;
             this.currentYPosition = this.currentFontSize;
@@ -44,6 +61,9 @@ var TSOS;
                     _OsShell.handleInput(this.buffer);
                     // ... and reset our buffer.
                     this.buffer = "";
+                }
+                else if (chr === String.fromCharCode(8)) {
+                    this.backspace();
                 }
                 else {
                     // This is a "normal" character, so ...
@@ -82,7 +102,9 @@ var TSOS;
                 _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
                 _FontHeightMargin;
             // TODO: Handle scrolling. (iProject 1)
-            window.scroll();
+            if (this.currentYPosition > _Canvas.height) {
+                this.scroll();
+            }
         };
         return Console;
     })();

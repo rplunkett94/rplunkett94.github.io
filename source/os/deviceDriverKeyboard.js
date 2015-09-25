@@ -1,6 +1,11 @@
-///<reference path="../globals.ts" />
+''; ///<reference path="../globals.ts" />
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
 ///<reference path="deviceDriver.ts" />
-
 /* ----------------------------------
    DeviceDriverKeyboard.ts
 
@@ -8,32 +13,28 @@
 
    The Kernel Keyboard Device Driver.
    ---------------------------------- */
-
-module TSOS {
-
+var TSOS;
+(function (TSOS) {
     // Extends DeviceDriver
-    export class DeviceDriverKeyboard extends DeviceDriver {
-
-        constructor() {
+    var DeviceDriverKeyboard = (function (_super) {
+        __extends(DeviceDriverKeyboard, _super);
+        function DeviceDriverKeyboard() {
             // Override the base method pointers.
-            super(this.krnKbdDriverEntry, this.krnKbdDispatchKeyPress);
+            _super.call(this, this.krnKbdDriverEntry, this.krnKbdDispatchKeyPress);
         }
-
-        public krnKbdDriverEntry() {
+        DeviceDriverKeyboard.prototype.krnKbdDriverEntry = function () {
             // Initialization routine for this, the kernel-mode Keyboard Device Driver.
             this.status = "loaded";
             // More?
-        }
-
-        public krnKbdDispatchKeyPress(params) {
+        };
+        DeviceDriverKeyboard.prototype.krnKbdDispatchKeyPress = function (params) {
             // Parse the params.    TODO: Check that the params are valid and osTrapError if not.
             var keyCode = params[0];
             var isShifted = params[1];
             _Kernel.krnTrace("Key code:" + keyCode + " shifted:" + isShifted);
             var chr = "";
             // Check to see if we even want to deal with the key that was pressed.
-            if (((keyCode >= 65) && (keyCode <= 90)) ||   // A..Z
-                ((keyCode >= 97) && (keyCode <= 123))) {  // a..z {
+            if (((keyCode >= 65) && (keyCode <= 90)) || ((keyCode >= 97) && (keyCode <= 123))) {
                 // Determine the character we want to display.
                 // Assume it's lowercase...
                 chr = String.fromCharCode(keyCode + 32);
@@ -43,14 +44,14 @@ module TSOS {
                 }
                 // TODO: Check for caps-lock and handle as shifted if so.
                 _KernelInputQueue.enqueue(chr);
-            } else if (((keyCode >= 48) && (keyCode <= 57)) ||   // digits
-                        (keyCode == 32)                     ||   // space
-                        (keyCode == 13)                     ||   // enter
-                        (keyCode == 8))                          // backspace
-            {
+            }
+            else if (((keyCode >= 48) && (keyCode <= 57)) || (keyCode == 32) || (keyCode == 13)) {
                 chr = String.fromCharCode(keyCode);
                 _KernelInputQueue.enqueue(chr);
             }
-        }
-    }
-}
+        };
+        return DeviceDriverKeyboard;
+    })(DeviceDriver);
+    TSOS.DeviceDriverKeyboard = DeviceDriverKeyboard;
+})(TSOS || (TSOS = {}));
+//# sourceMappingURL=deviceDriverKeyboard.js.map
