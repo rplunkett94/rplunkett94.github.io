@@ -41,10 +41,36 @@ module TSOS {
         public backspace():void{
             var bufferLength = this.buffer.length;
             var lastChar = bufferLength - 1;
-            var c = CanvasTextFunctions.letter(this.buffer.charAt(lastChar));
             this.buffer = this.buffer.substring(0, lastChar);
             this.clearLine();
             this.putText(">" + this.buffer);
+        }
+
+
+        private autoComplete():void {
+            var lastMatch = "";
+            var matchFound = false;
+            for (var i = 0; i < _OsShell.commandList.length; ++i) {
+                //console.log(this.buffer);
+                //console.log(_OsShell.commandList[i].command.startsWith(this.buffer));
+                if ((_OsShell.commandList[i].command.startsWith(this.buffer)) && this.buffer != "") {
+                    matchFound = true;
+                    this.advanceLine();
+                    this.putText(">" + _OsShell.commandList[i].command);
+                    lastMatch = _OsShell.commandList[i].command;
+                }
+            }
+            if(matchFound) {
+                this.buffer = lastMatch;
+
+            }else {
+                this.clearLine();
+                this.buffer = "";
+                this.putText("No Match");
+                this.advanceLine();
+                this.putText(">");
+            }
+
         }
 
 
@@ -75,7 +101,10 @@ module TSOS {
                     // Removes the last character
                 } else if(chr === String.fromCharCode(8)) {
                     this.backspace();
-
+                    // checks for click code (9)
+                    // completes command
+                } else if(chr === String.fromCharCode(9)) {
+                    this.autoComplete();
                 } else {
                     // This is a "normal" character, so ...
                     // ... draw it on the screen...

@@ -30,6 +30,11 @@ h3 {
   font-style: normal;
 }
 
+#statusBar{
+  cursor: default;
+  display:inline;
+}
+
 #display {
   background-color:#DFDBC3;
   border: 2px solid red;
