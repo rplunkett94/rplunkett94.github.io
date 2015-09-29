@@ -215,7 +215,7 @@ var TSOS;
                         _StdOut.Text("Says mean things to you.");
                         break;
                     case "Apology":
-                        _StdOut.Text("Apologyises for being so mean.");
+                        _StdOut.Text("Apologizes for being so mean.");
                         break;
                     case "InvalidCommand":
                         _StdOut.Text("Tells you when your commands are well... invalid");
@@ -287,14 +287,12 @@ var TSOS;
         };
         Shell.prototype.shellDate = function (args) {
             var d = new Date();
-            var numDate = d.getDate();
-            var numMonth = d.getMonth();
-            var numYear = d.getFullYear();
-            _StdOut.putText(numMonth);
-            _StdOut.putText("The Date is " + (numMonth + 1) + "/" + numDate + "/" + numYear);
+            var newDate = d.toDateString();
+            console.log(newDate);
+            _StdOut.putText(newDate + "  " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds());
         };
         Shell.prototype.shellWhereami = function (args) {
-            _StdOut.putText("What do I look like Google Maps??");
+            _StdOut.putText("What do I look like Google Maps???");
         };
         Shell.prototype.shellBackgroundColor = function (args) {
             _StdOut.putText("going emo");
