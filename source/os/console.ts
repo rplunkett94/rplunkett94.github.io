@@ -59,6 +59,7 @@ module TSOS {
                     this.putText(">" + _OsShell.commandList[i].command);
                     lastMatch = _OsShell.commandList[i].command;
                 }
+
             }
             if(matchFound) {
                 this.buffer = lastMatch;
