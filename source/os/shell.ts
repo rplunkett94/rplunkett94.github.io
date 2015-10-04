@@ -94,7 +94,13 @@ module TSOS {
                 "backgroundcolor",
                 " - changes background color");
             this.commandList[this.commandList.length] = sc;
-            //
+
+            sc= new ShellCommand(this.shellStatus,
+                "status",
+                " <string> Enter a status");
+            this.commandList[this.commandList.length] = sc;
+
+
             // Display the initial prompt.
             this.putPrompt();
         }
@@ -336,7 +342,6 @@ module TSOS {
         public shellDate(args) {
             var d = new Date();
             var newDate = d.toDateString();
-            console.log(newDate);
             _StdOut.putText(newDate + "  " + d.getHours() + ":" + d.getMinutes()+ ":" + d.getSeconds());
 
         }
@@ -349,8 +354,22 @@ module TSOS {
        public shellBackgroundColor(args) {
             _StdOut.putText("going emo");
             document.body.style.background = "black";
-            
         }
 
+        public shellStatus(args) {
+            //_statusBar.value += (_StdOut.clearScreen());
+            //this.shellCls(args);
+            _statusBar.value += ("\n");
+            _statusBar.value += ("Status: ");
+
+            for (var i = 0; args.length > i; i++){
+                if (args.length > i) {
+
+                    _statusBar.value += (" " + args[i]);
+                } else {
+                    _StdOut.putText("Usage: status <string>  Please supply a string.");
+                }
+            }
+        }
     }
 }

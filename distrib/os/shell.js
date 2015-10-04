@@ -57,7 +57,8 @@ var TSOS;
             this.commandList[this.commandList.length] = sc;
             sc = new TSOS.ShellCommand(this.shellBackgroundColor, "backgroundcolor", " - changes background color");
             this.commandList[this.commandList.length] = sc;
-            //
+            sc = new TSOS.ShellCommand(this.shellStatus, "status", " <string> Enter a status");
+            this.commandList[this.commandList.length] = sc;
             // Display the initial prompt.
             this.putPrompt();
         };
@@ -288,7 +289,6 @@ var TSOS;
         Shell.prototype.shellDate = function (args) {
             var d = new Date();
             var newDate = d.toDateString();
-            console.log(newDate);
             _StdOut.putText(newDate + "  " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds());
         };
         Shell.prototype.shellWhereami = function (args) {
@@ -297,6 +297,20 @@ var TSOS;
         Shell.prototype.shellBackgroundColor = function (args) {
             _StdOut.putText("going emo");
             document.body.style.background = "black";
+        };
+        Shell.prototype.shellStatus = function (args) {
+            //_statusBar.value += (_StdOut.clearScreen());
+            //this.shellCls(args);
+            _statusBar.value += ("\n");
+            _statusBar.value += ("Status: ");
+            for (var i = 0; args.length > i; i++) {
+                if (args.length > i) {
+                    _statusBar.value += (" " + args[i]);
+                }
+                else {
+                    _StdOut.putText("Usage: status <string>  Please supply a string.");
+                }
+            }
         };
         return Shell;
     })();
