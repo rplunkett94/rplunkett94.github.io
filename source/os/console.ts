@@ -17,7 +17,9 @@ module TSOS {
                     public currentFontSize = _DefaultFontSize,
                     public currentXPosition = 0,
                     public currentYPosition = _DefaultFontSize,
-                    public buffer = "") {
+                    public buffer = "",
+                    public bufferArray = [],
+                    public bufferIndex = 0) {
         }
 
         public init(): void {
@@ -94,6 +96,7 @@ module TSOS {
                 if (chr === String.fromCharCode(13)) { //     Enter key
                     // The enter key marks the end of a console command, so ...
                     // ... tell the shell ...
+                    this.bufferArray[this.bufferArray.length]=this.buffer;
                     _OsShell.handleInput(this.buffer);
                     // ... and reset our buffer.
                     this.buffer = "";
@@ -105,6 +108,10 @@ module TSOS {
                     // completes command
                 } else if(chr === String.fromCharCode(9)) {
                     this.autoComplete();
+
+                } else if(chr === String.fromCharCode(17) || chr === String.fromCharCode(18)) {//arrows
+                    this.history(chr);
+
                 } else {
                     // This is a "normal" character, so ...
                     // ... draw it on the screen...
@@ -148,6 +155,27 @@ module TSOS {
             // TODO: Handle scrolling. (iProject 1)
             if (this.currentYPosition >_Canvas.height) {
                 this.scroll();
+            }
+        }
+
+        public history(args): void {
+            if (args === String.fromCharCode(17)) {
+                if (this.bufferIndex < this.bufferArray.length) {
+                    ++this.bufferIndex;
+                    //console.log("test");
+                    this.clearLine();
+                    this.putText(">" + this.bufferArray[this.bufferArray.length - this.bufferIndex]);
+                    this.buffer = this.bufferArray [this.bufferArray.length - this.bufferIndex];
+                }
+            }
+
+            if (args === String.fromCharCode(18)) {
+                if(this.bufferIndex >=2) {
+                    --this.bufferIndex;
+                    this.clearLine();
+                    this.putText(">" + this.bufferArray[this.bufferArray.length - this.bufferIndex]);
+                    this.buffer=this.bufferArray[this.bufferArray.length - this.bufferIndex];
+                }
             }
         }
     }
