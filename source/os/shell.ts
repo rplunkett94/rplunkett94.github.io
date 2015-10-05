@@ -75,7 +75,7 @@ module TSOS {
             // prompt <string>
             sc = new ShellCommand(this.shellPrompt,
                                   "prompt",
-                                  "<string> - Sets the prompt.");
+                                  " <string> - Sets the prompt.");
             this.commandList[this.commandList.length] = sc;
 
             // ps  - list the running processes and their IDs
@@ -97,12 +97,17 @@ module TSOS {
 
             sc= new ShellCommand(this.shellStatus,
                 "status",
-                " <string> Enter a status");
+                "<string> - Enter a status");
             this.commandList[this.commandList.length] = sc;
 
             sc= new ShellCommand(this.shellLoad,
                 "load",
-                "Loads from the user program");
+                " - Loads from the user program");
+            this.commandList[this.commandList.length] = sc;
+
+            sc= new ShellCommand(this.shellError,
+                "error",
+                " - displays an error");
             this.commandList[this.commandList.length] = sc;
 
 
@@ -403,6 +408,10 @@ module TSOS {
                 _StdOut.putText("Program is invalid");
             }
 
+        }
+
+        public shellError(args){
+            _Kernel.krnTrapError("a random error");
         }
     }
 }

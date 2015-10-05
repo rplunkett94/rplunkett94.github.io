@@ -47,7 +47,7 @@ var TSOS;
             sc = new TSOS.ShellCommand(this.shellRot13, "rot13", "<string> - Does rot13 obfuscation on <string>.");
             this.commandList[this.commandList.length] = sc;
             // prompt <string>
-            sc = new TSOS.ShellCommand(this.shellPrompt, "prompt", "<string> - Sets the prompt.");
+            sc = new TSOS.ShellCommand(this.shellPrompt, "prompt", " <string> - Sets the prompt.");
             this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
@@ -57,9 +57,11 @@ var TSOS;
             this.commandList[this.commandList.length] = sc;
             sc = new TSOS.ShellCommand(this.shellBackgroundColor, "backgroundcolor", " - changes background color");
             this.commandList[this.commandList.length] = sc;
-            sc = new TSOS.ShellCommand(this.shellStatus, "status", " <string> Enter a status");
+            sc = new TSOS.ShellCommand(this.shellStatus, "status", "<string> - Enter a status");
             this.commandList[this.commandList.length] = sc;
-            sc = new TSOS.ShellCommand(this.shellLoad, "load", "Loads from the user program");
+            sc = new TSOS.ShellCommand(this.shellLoad, "load", " - Loads from the user program");
+            this.commandList[this.commandList.length] = sc;
+            sc = new TSOS.ShellCommand(this.shellError, "error", " - displays an error");
             this.commandList[this.commandList.length] = sc;
             // Display the initial prompt.
             this.putPrompt();
@@ -337,6 +339,9 @@ var TSOS;
             else {
                 _StdOut.putText("Program is invalid");
             }
+        };
+        Shell.prototype.shellError = function (args) {
+            _Kernel.krnTrapError("a random error");
         };
         return Shell;
     })();
