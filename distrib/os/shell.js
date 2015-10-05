@@ -59,6 +59,8 @@ var TSOS;
             this.commandList[this.commandList.length] = sc;
             sc = new TSOS.ShellCommand(this.shellStatus, "status", " <string> Enter a status");
             this.commandList[this.commandList.length] = sc;
+            sc = new TSOS.ShellCommand(this.shellLoad, "load", "Loads from the user program");
+            this.commandList[this.commandList.length] = sc;
             // Display the initial prompt.
             this.putPrompt();
         };
@@ -236,6 +238,14 @@ var TSOS;
                     case "whereami":
                         _StdOut.Text("Displays user location.");
                         break;
+                    case "backgroundcolor":
+                        _StdOut.Text("Changes background color.");
+                        break;
+                    case "status":
+                        _StdOut.Text("Displays a status");
+                        break;
+                    case "load":
+                        _StdOut.Text("");
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
                 }
@@ -310,6 +320,22 @@ var TSOS;
                 else {
                     _StdOut.putText("Usage: status <string>  Please supply a string.");
                 }
+            }
+        };
+        Shell.prototype.shellLoad = function (args) {
+            var program = _Load.value;
+            var pass = false;
+            var hex = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", " "];
+            for (var i = 0; i < program.length; i++) {
+                if (hex.indexOf(program.charAt(i)) > -1) {
+                    pass = true;
+                }
+            }
+            if (pass) {
+                _StdOut.putText("Program is valid");
+            }
+            else {
+                _StdOut.putText("Program is invalid");
             }
         };
         return Shell;

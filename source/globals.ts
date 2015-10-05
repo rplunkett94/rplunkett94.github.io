@@ -12,7 +12,7 @@
 // Global CONSTANTS (TypeScript 1.5 introduced const. Very cool.)
 //
 const APP_NAME: string    = "Awesome OS ";   // 'cause Bob and I were at a loss for a better name.
-const APP_VERSION: string = "0.09";   // What did you expect?
+const APP_VERSION: string = "0.10";   // What did you expect?
 
 const CPU_CLOCK_INTERVAL: number = 100;   // This is in ms (milliseconds) so 1000 = 1 second.
 
@@ -30,8 +30,11 @@ var _OSclock: number = 0;  // Page 23.
 
 var _Mode: number = 0;     // (currently unused)  0 = Kernel Mode, 1 = User Mode.  See page 21.
 
-var _Canvas: HTMLCanvasElement;         // Initialized in Control.hostInit().
+// Initialized in Control.hostInit().
+var _Canvas: HTMLCanvasElement;
 var _statusBar: HTMLTextAreaElement;
+var _Load: HTMLTextAreaElement;
+
 var _DrawingContext: any; // = _Canvas.getContext("2d");  // Assigned here for type safety, but re-initialized in Control.hostInit() for OCD and logic.
 var _DefaultFontFamily: string = "sans";        // Ignored, I think. The was just a place-holder in 2008, but the HTML canvas may have use for it.
 var _DefaultFontSize: number = 13;

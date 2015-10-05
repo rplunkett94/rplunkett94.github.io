@@ -38,6 +38,8 @@ module TSOS {
             var newDate = d.toDateString();
             _statusBar.value = (newDate + "  " + d.getHours() + ":" + d.getMinutes()+ ":" + d.getSeconds());
 
+            _Load = <HTMLTextAreaElement>document.getElementById('taProgramInput');
+
             // Get a global reference to the drawing context.
             _DrawingContext = _Canvas.getContext("2d");
 

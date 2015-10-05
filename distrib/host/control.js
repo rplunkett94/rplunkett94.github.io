@@ -34,6 +34,7 @@ var TSOS;
             var d = new Date();
             var newDate = d.toDateString();
             _statusBar.value = (newDate + "  " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds());
+            _Load = document.getElementById('taProgramInput');
             // Get a global reference to the drawing context.
             _DrawingContext = _Canvas.getContext("2d");
             // Enable the added-in canvas text functions (see canvastext.ts for provenance and details).
