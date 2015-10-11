@@ -28,13 +28,13 @@ module TSOS {
         }
 
 
-        private clearScreen(): void {
+        public clearScreen(): void {
             _DrawingContext.clearRect(0, 0, _Canvas.width, _Canvas.height);
         }
 
 
 
-        private clearLine():void{
+        public clearLine():void{
             _DrawingContext.clearRect( 0,this.currentYPosition-this.currentFontSize , _Canvas.width,this.currentFontSize+5);
             this.currentXPosition=0;
         }
@@ -159,7 +159,7 @@ module TSOS {
         }
 
         public history(args): void {
-            if (args === String.fromCharCode(17)) {
+            if (args === String.fromCharCode(37)) {
                 if (this.bufferIndex < this.bufferArray.length) {
                     ++this.bufferIndex;
                     //console.log("test");
@@ -169,7 +169,7 @@ module TSOS {
                 }
             }
 
-            if (args === String.fromCharCode(18)) {
+            if (args === String.fromCharCode(39)) {
                 if(this.bufferIndex >=2) {
                     --this.bufferIndex;
                     this.clearLine();

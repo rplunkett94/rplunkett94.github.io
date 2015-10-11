@@ -141,7 +141,7 @@ var TSOS;
             }
         };
         Console.prototype.history = function (args) {
-            if (args === String.fromCharCode(17)) {
+            if (args === String.fromCharCode(37)) {
                 if (this.bufferIndex < this.bufferArray.length) {
                     ++this.bufferIndex;
                     //console.log("test");
@@ -150,7 +150,7 @@ var TSOS;
                     this.buffer = this.bufferArray[this.bufferArray.length - this.bufferIndex];
                 }
             }
-            if (args === String.fromCharCode(18)) {
+            if (args === String.fromCharCode(39)) {
                 if (this.bufferIndex >= 2) {
                     --this.bufferIndex;
                     this.clearLine();

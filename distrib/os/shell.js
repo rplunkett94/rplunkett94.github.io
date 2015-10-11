@@ -341,7 +341,7 @@ var TSOS;
             }
         };
         Shell.prototype.shellError = function (args) {
-            _Kernel.krnTrapError("a random error");
+            _Kernel.krnTrapError("error");
         };
         return Shell;
     })();

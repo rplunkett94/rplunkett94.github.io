@@ -411,7 +411,7 @@ module TSOS {
         }
 
         public shellError(args){
-            _Kernel.krnTrapError("a random error");
+            _Kernel.krnTrapError("error");
         }
     }
 }
