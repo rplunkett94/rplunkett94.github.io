@@ -162,7 +162,7 @@ module TSOS {
             if (args === String.fromCharCode(17)) {
                 if (this.bufferIndex < this.bufferArray.length) {
                     ++this.bufferIndex;
-                    //console.log("test");
+                    console.log("test");
                     this.clearLine();
                     this.putText(">" + this.bufferArray[this.bufferArray.length - this.bufferIndex]);
                     this.buffer = this.bufferArray [this.bufferArray.length - this.bufferIndex];
