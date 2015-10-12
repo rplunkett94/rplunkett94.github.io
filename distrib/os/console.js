@@ -10,17 +10,21 @@
 var TSOS;
 (function (TSOS) {
     var Console = (function () {
-        function Console(currentFont, currentFontSize, currentXPosition, currentYPosition, buffer) {
+        function Console(currentFont, currentFontSize, currentXPosition, currentYPosition, buffer, bufferArray, bufferIndex) {
             if (currentFont === void 0) { currentFont = _DefaultFontFamily; }
             if (currentFontSize === void 0) { currentFontSize = _DefaultFontSize; }
             if (currentXPosition === void 0) { currentXPosition = 0; }
             if (currentYPosition === void 0) { currentYPosition = _DefaultFontSize; }
             if (buffer === void 0) { buffer = ""; }
+            if (bufferArray === void 0) { bufferArray = []; }
+            if (bufferIndex === void 0) { bufferIndex = 0; }
             this.currentFont = currentFont;
             this.currentFontSize = currentFontSize;
             this.currentXPosition = currentXPosition;
             this.currentYPosition = currentYPosition;
             this.buffer = buffer;
+            this.bufferArray = bufferArray;
+            this.bufferIndex = bufferIndex;
         }
         Console.prototype.init = function () {
             this.clearScreen();
@@ -36,10 +40,33 @@ var TSOS;
         Console.prototype.backspace = function () {
             var bufferLength = this.buffer.length;
             var lastChar = bufferLength - 1;
-            var c = TSOS.CanvasTextFunctions.letter(this.buffer.charAt(lastChar));
             this.buffer = this.buffer.substring(0, lastChar);
             this.clearLine();
             this.putText(">" + this.buffer);
+        };
+        Console.prototype.autoComplete = function () {
+            var lastMatch = "";
+            var matchFound = false;
+            for (var i = 0; i < _OsShell.commandList.length; ++i) {
+                //console.log(this.buffer);
+                //console.log(_OsShell.commandList[i].command.startsWith(this.buffer));
+                if ((_OsShell.commandList[i].command.startsWith(this.buffer)) && this.buffer != "") {
+                    matchFound = true;
+                    this.advanceLine();
+                    this.putText(">" + _OsShell.commandList[i].command);
+                    lastMatch = _OsShell.commandList[i].command;
+                }
+            }
+            if (matchFound) {
+                this.buffer = lastMatch;
+            }
+            else {
+                this.clearLine();
+                this.buffer = "";
+                this.putText("No Match");
+                this.advanceLine();
+                this.putText(">");
+            }
         };
         Console.prototype.scroll = function () {
             var data = _DrawingContext.getImageData(0, 0, _Canvas.width, _Canvas.height);
@@ -58,12 +85,19 @@ var TSOS;
                 if (chr === String.fromCharCode(13)) {
                     // The enter key marks the end of a console command, so ...
                     // ... tell the shell ...
+                    this.bufferArray[this.bufferArray.length] = this.buffer;
                     _OsShell.handleInput(this.buffer);
                     // ... and reset our buffer.
                     this.buffer = "";
                 }
                 else if (chr === String.fromCharCode(8)) {
                     this.backspace();
+                }
+                else if (chr === String.fromCharCode(9)) {
+                    this.autoComplete();
+                }
+                else if (chr === String.fromCharCode(17) || chr === String.fromCharCode(18)) {
+                    this.history(chr);
                 }
                 else {
                     // This is a "normal" character, so ...
@@ -104,6 +138,25 @@ var TSOS;
             // TODO: Handle scrolling. (iProject 1)
             if (this.currentYPosition > _Canvas.height) {
                 this.scroll();
+            }
+        };
+        Console.prototype.history = function (args) {
+            if (args === String.fromCharCode(17)) {
+                if (this.bufferIndex < this.bufferArray.length) {
+                    ++this.bufferIndex;
+                    console.log("test");
+                    this.clearLine();
+                    this.putText(">" + this.bufferArray[this.bufferArray.length - this.bufferIndex]);
+                    this.buffer = this.bufferArray[this.bufferArray.length - this.bufferIndex];
+                }
+            }
+            if (args === String.fromCharCode(18)) {
+                if (this.bufferIndex >= 2) {
+                    --this.bufferIndex;
+                    this.clearLine();
+                    this.putText(">" + this.bufferArray[this.bufferArray.length - this.bufferIndex]);
+                    this.buffer = this.bufferArray[this.bufferArray.length - this.bufferIndex];
+                }
             }
         };
         return Console;

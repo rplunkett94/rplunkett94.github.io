@@ -75,7 +75,7 @@ module TSOS {
             // prompt <string>
             sc = new ShellCommand(this.shellPrompt,
                                   "prompt",
-                                  "<string> - Sets the prompt.");
+                                  " <string> - Sets the prompt.");
             this.commandList[this.commandList.length] = sc;
 
             // ps  - list the running processes and their IDs
@@ -94,7 +94,25 @@ module TSOS {
                 "backgroundcolor",
                 " - changes background color");
             this.commandList[this.commandList.length] = sc;
-            //
+
+            sc= new ShellCommand(this.shellStatus,
+                "status",
+                "<string> - Enter a status");
+            this.commandList[this.commandList.length] = sc;
+
+            sc= new ShellCommand(this.shellLoad,
+                "load",
+                " - Loads from the user program");
+            this.commandList[this.commandList.length] = sc;
+
+            sc= new ShellCommand(this.shellError,
+                "error",
+                " - displays an error");
+            this.commandList[this.commandList.length] = sc;
+
+
+
+
             // Display the initial prompt.
             this.putPrompt();
         }
@@ -283,6 +301,14 @@ module TSOS {
                     case "whereami":
                         _StdOut.Text("Displays user location.");
                         break;
+                    case "backgroundcolor":
+                        _StdOut.Text("Changes background color.");
+                        break;
+                    case "status":
+                        _StdOut.Text("Displays a status");
+                        break;
+                    case "load":
+                        _StdOut.Text("")
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
                 }
@@ -332,13 +358,11 @@ module TSOS {
             }
         }
 
+
         public shellDate(args) {
             var d = new Date();
-            var numDate = d.getDate();
-            var numMonth = d.getMonth();
-            var numYear = d.getFullYear();
-            _StdOut.putText(numMonth);
-            _StdOut.putText("The Date is " + (numMonth + 1) + "/" + numDate + "/" + numYear);
+            var newDate = d.toDateString();
+            _StdOut.putText(newDate + "  " + d.getHours() + ":" + d.getMinutes()+ ":" + d.getSeconds());
 
         }
 
@@ -350,8 +374,44 @@ module TSOS {
        public shellBackgroundColor(args) {
             _StdOut.putText("going emo");
             document.body.style.background = "black";
-            
         }
 
+        public shellStatus(args) {
+            //_statusBar.value += (_StdOut.clearScreen());
+            //this.shellCls(args);
+            _statusBar.value += ("\n");
+            _statusBar.value += ("Status: ");
+
+            for (var i = 0; args.length > i; i++){
+                if (args.length > i) {
+
+                    _statusBar.value += (" " + args[i]);
+                } else {
+                    _StdOut.putText("Usage: status <string>  Please supply a string.");
+                }
+            }
+        }
+
+        public shellLoad(args){
+            var program = _Load.value;
+            var pass = false;
+            var hex = ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F", " "];
+            for(var i = 0; i < program.length; i++){
+                if(hex.indexOf(program.charAt(i)) > -1){
+                    pass = true;
+                }
+            }
+
+            if(pass){
+                _StdOut.putText("Program is valid");
+            }else{
+                _StdOut.putText("Program is invalid");
+            }
+
+        }
+
+        public shellError(args){
+            _Kernel.krnTrapError("error");
+        }
     }
 }

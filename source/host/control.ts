@@ -33,6 +33,13 @@ module TSOS {
             // Get a global reference to the canvas.  TODO: Should we move this stuff into a Display Device Driver?
             _Canvas = <HTMLCanvasElement>document.getElementById('display');
 
+            _statusBar = <HTMLTextAreaElement>document.getElementById('statusBar');
+            var d = new Date();
+            var newDate = d.toDateString();
+            _statusBar.value = (newDate + "  " + d.getHours() + ":" + d.getMinutes()+ ":" + d.getSeconds());
+
+            _Load = <HTMLTextAreaElement>document.getElementById('taProgramInput');
+
             // Get a global reference to the drawing context.
             _DrawingContext = _Canvas.getContext("2d");
 

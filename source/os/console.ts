@@ -17,7 +17,9 @@ module TSOS {
                     public currentFontSize = _DefaultFontSize,
                     public currentXPosition = 0,
                     public currentYPosition = _DefaultFontSize,
-                    public buffer = "") {
+                    public buffer = "",
+                    public bufferArray = [],
+                    public bufferIndex = 0) {
         }
 
         public init(): void {
@@ -26,13 +28,13 @@ module TSOS {
         }
 
 
-        private clearScreen(): void {
+        public clearScreen(): void {
             _DrawingContext.clearRect(0, 0, _Canvas.width, _Canvas.height);
         }
 
 
 
-        private clearLine():void{
+        public clearLine():void{
             _DrawingContext.clearRect( 0,this.currentYPosition-this.currentFontSize , _Canvas.width,this.currentFontSize+5);
             this.currentXPosition=0;
         }
@@ -41,12 +43,38 @@ module TSOS {
         public backspace():void{
             var bufferLength = this.buffer.length;
             var lastChar = bufferLength - 1;
-            var c = CanvasTextFunctions.letter(this.buffer.charAt(lastChar));
             this.buffer = this.buffer.substring(0, lastChar);
             this.clearLine();
             this.putText(">" + this.buffer);
         }
 
+
+        private autoComplete():void {
+            var lastMatch = "";
+            var matchFound = false;
+            for (var i = 0; i < _OsShell.commandList.length; ++i) {
+                //console.log(this.buffer);
+                //console.log(_OsShell.commandList[i].command.startsWith(this.buffer));
+                if ((_OsShell.commandList[i].command.startsWith(this.buffer)) && this.buffer != "") {
+                    matchFound = true;
+                    this.advanceLine();
+                    this.putText(">" + _OsShell.commandList[i].command);
+                    lastMatch = _OsShell.commandList[i].command;
+                }
+
+            }
+            if(matchFound) {
+                this.buffer = lastMatch;
+
+            }else {
+                this.clearLine();
+                this.buffer = "";
+                this.putText("No Match");
+                this.advanceLine();
+                this.putText(">");
+            }
+
+        }
 
         public scroll(): void{
             var data = _DrawingContext.getImageData(0,0,_Canvas.width, _Canvas.height);
@@ -68,6 +96,7 @@ module TSOS {
                 if (chr === String.fromCharCode(13)) { //     Enter key
                     // The enter key marks the end of a console command, so ...
                     // ... tell the shell ...
+                    this.bufferArray[this.bufferArray.length]=this.buffer;
                     _OsShell.handleInput(this.buffer);
                     // ... and reset our buffer.
                     this.buffer = "";
@@ -75,6 +104,13 @@ module TSOS {
                     // Removes the last character
                 } else if(chr === String.fromCharCode(8)) {
                     this.backspace();
+                    // checks for click code (9)
+                    // completes command
+                } else if(chr === String.fromCharCode(9)) {
+                    this.autoComplete();
+
+                } else if(chr === String.fromCharCode(17) || chr === String.fromCharCode(18)) {//arrows
+                    this.history(chr);
 
                 } else {
                     // This is a "normal" character, so ...
@@ -119,6 +155,27 @@ module TSOS {
             // TODO: Handle scrolling. (iProject 1)
             if (this.currentYPosition >_Canvas.height) {
                 this.scroll();
+            }
+        }
+
+        public history(args): void {
+            if (args === String.fromCharCode(17)) {
+                if (this.bufferIndex < this.bufferArray.length) {
+                    ++this.bufferIndex;
+                    console.log("test");
+                    this.clearLine();
+                    this.putText(">" + this.bufferArray[this.bufferArray.length - this.bufferIndex]);
+                    this.buffer = this.bufferArray [this.bufferArray.length - this.bufferIndex];
+                }
+            }
+
+            if (args === String.fromCharCode(18)) {
+                if(this.bufferIndex >=2) {
+                    --this.bufferIndex;
+                    this.clearLine();
+                    this.putText(">" + this.bufferArray[this.bufferArray.length - this.bufferIndex]);
+                    this.buffer=this.bufferArray[this.bufferArray.length - this.bufferIndex];
+                }
             }
         }
     }
