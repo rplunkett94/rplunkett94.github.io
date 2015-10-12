@@ -40,7 +40,7 @@ module TSOS {
             var specialChar=[189, 187, 192, 186, 222, 188, 190, 191, 219, 221, 220]; //keyCode of symbol key
             var symbolHold;
 
-            if((keyCode == 38|| keyCode == 40)) {
+            if((keyCode == 38 || keyCode == 40)) {
                 switch (keyCode) {
                    case 38:
                         keyCode = 17;
@@ -51,7 +51,7 @@ module TSOS {
 
 
                 }
-                //console.log(keyCode);
+                console.log(keyCode);
                 chr = String.fromCharCode(keyCode);
                 _KernelInputQueue.enqueue(chr);
                 // Check to see if we even want to deal with the key that was pressed.

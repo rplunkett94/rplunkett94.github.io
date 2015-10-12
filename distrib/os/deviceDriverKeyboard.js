@@ -47,7 +47,7 @@ var TSOS;
                         keyCode = 18;
                         break;
                 }
-                //console.log(keyCode);
+                console.log(keyCode);
                 chr = String.fromCharCode(keyCode);
                 _KernelInputQueue.enqueue(chr);
             }
