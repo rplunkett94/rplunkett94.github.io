@@ -69,9 +69,11 @@ var TSOS;
             }
         };
         Console.prototype.scroll = function () {
-            var data = _DrawingContext.getImageData(0, 0, _Canvas.width, _Canvas.height);
-            _Canvas.height += 100;
-            _DrawingContext.putImageData(data, 0, 0);
+            var currentScreen = _DrawingContext.getImageData(0, this.currentFontSize + 7, _Canvas.width, _Canvas.height);
+            this.clearScreen();
+            this.currentYPosition -= _DefaultFontSize + _DrawingContext.fontDescent(this.currentFont, this.currentFontSize)
+                + _FontHeightMargin;
+            _DrawingContext.putImageData(currentScreen, 0, 0);
         };
         Console.prototype.resetXY = function () {
             this.currentXPosition = 0;

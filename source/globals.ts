@@ -12,7 +12,7 @@
 // Global CONSTANTS (TypeScript 1.5 introduced const. Very cool.)
 //
 const APP_NAME: string    = "Awesome OS ";   // 'cause Bob and I were at a loss for a better name.
-const APP_VERSION: string = "0.10";   // What did you expect?
+const APP_VERSION: string = "2.0";   // What did you expect?
 
 const CPU_CLOCK_INTERVAL: number = 100;   // This is in ms (milliseconds) so 1000 = 1 second.
 
@@ -26,6 +26,19 @@ const KEYBOARD_IRQ: number = 1;
 //
 var _CPU: TSOS.Cpu;  // Utilize TypeScript's type annotation system to ensure that _CPU is an instance of the Cpu class.
 
+var _PID:number = 0;
+var _PCB: TSOS.PCB;
+var _Counter: number;
+
+
+
+
+
+
+var _Mem: TSOS.Memory;
+var _MemMan: TSOS.MemoryManager;
+
+
 var _OSclock: number = 0;  // Page 23.
 
 var _Mode: number = 0;     // (currently unused)  0 = Kernel Mode, 1 = User Mode.  See page 21.
@@ -33,7 +46,10 @@ var _Mode: number = 0;     // (currently unused)  0 = Kernel Mode, 1 = User Mode
 // Initialized in Control.hostInit().
 var _Canvas: HTMLCanvasElement;
 var _statusBar: HTMLTextAreaElement;
-var _Load: HTMLTextAreaElement;
+var _Load: any = null;
+var _MemTable: any = null;
+var _CPUTable: any = null;
+var _PCBTable: any = null;
 
 var _DrawingContext: any; // = _Canvas.getContext("2d");  // Assigned here for type safety, but re-initialized in Control.hostInit() for OCD and logic.
 var _DefaultFontFamily: string = "sans";        // Ignored, I think. The was just a place-holder in 2008, but the HTML canvas may have use for it.
@@ -41,6 +57,9 @@ var _DefaultFontSize: number = 13;
 var _FontHeightMargin: number = 4;              // Additional space added to font size when advancing a line.
 
 var _Trace: boolean = true;  // Default the OS trace to be on.
+var _Step: boolean=false;
+
+
 
 // The OS Kernel and its queues.
 var _Kernel: TSOS.Kernel;

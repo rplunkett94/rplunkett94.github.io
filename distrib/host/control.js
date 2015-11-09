@@ -1,4 +1,6 @@
 ///<reference path="../globals.ts" />
+///<reference path="../os/MemoryManager.ts" />
+///<reference path="../host/Memory.ts" />
 ///<reference path="../os/canvastext.ts" />
 /* ------------
      Control.ts
@@ -35,6 +37,8 @@ var TSOS;
             var newDate = d.toDateString();
             _statusBar.value = (newDate + "  " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds());
             _Load = document.getElementById('taProgramInput');
+            _CPUTable = document.getElementById('cpuTable'); //CPU Table
+            _PCBTable = document.getElementById('pcbTable'); //PCBTable
             // Get a global reference to the drawing context.
             _DrawingContext = _Canvas.getContext("2d");
             // Enable the added-in canvas text functions (see canvastext.ts for provenance and details).
@@ -45,6 +49,10 @@ var TSOS;
             // Set focus on the start button.
             // Use the TypeScript cast to HTMLInputElement
             document.getElementById("btnStartOS").focus();
+            // memory generator
+            _Mem = new TSOS.Memory(768);
+            _MemMan = new TSOS.MemoryManager();
+            this.generateMemoryTable(1);
             // Check for our testing and enrichment core, which
             // may be referenced here (from index.html) as function Glados().
             if (typeof Glados === "function") {
@@ -102,6 +110,64 @@ var TSOS;
             // That boolean parameter is the 'forceget' flag. When it is true it causes the page to always
             // be reloaded from the server. If it is false or not specified the browser may reload the
             // page from its cache, which is not what we want.
+        };
+        Control.emptyMemTable = function () {
+            var counter = 0;
+            for (var i = 0; i < 32; i++) {
+                for (var k = 0; k < 8; k++) {
+                    document.getElementById(counter.toString()).innerHTML = "00";
+                    counter++;
+                }
+            }
+        };
+        Control.updateMemTableLoc = function (tRow, tCell, myCode) {
+            //console.log(tRow +" "+ tCell +" "+ myCode);
+            _MemTable.rows[tRow].cells[tCell].innerHTML = myCode;
+        };
+        Control.generateMemoryTable = function (segments) {
+            _MemTable = document.getElementById('mTable');
+            var count = 0;
+            for (var i = 0; i < segments; i++) {
+                // 32 rows
+                for (var j = 0; j < 32; j++) {
+                    if (j === 31 && i !== 2) {
+                        var tr = document.createElement("tr");
+                        tr.id = "bottomRow";
+                        _MemTable.appendChild(tr);
+                    }
+                    else {
+                        var tr = document.createElement("tr");
+                        _MemTable.appendChild(tr);
+                    }
+                    // 8 cells per row
+                    for (var k = 0; k < 8; k++) {
+                        var td = document.createElement("td");
+                        td.id = count.toString();
+                        count++;
+                        // Put the contents of each unit of memory into the td.
+                        td.innerHTML = "00";
+                        tr.appendChild(td);
+                    }
+                }
+            }
+        };
+        Control.singleStep_click = function (btn) {
+            _Step = !_Step;
+            if (_Step) {
+                document.getElementById("singleStep").value = "Single Step On";
+            }
+            else {
+                document.getElementById("singleStep").value = "Single Step Off";
+            }
+        };
+        Control.nextStep_click = function (btn) {
+            _CPU.isExecuting = true;
+        };
+        Control.hexToDec = function (hexStr) {
+            return parseInt(hexStr, 16);
+        };
+        Control.decToHex = function (decNum) {
+            return decNum.toString(16);
         };
         return Control;
     })();

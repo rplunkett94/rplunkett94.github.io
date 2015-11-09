@@ -15,6 +15,7 @@
    <script type="text/javascript" src="distrib/host/control.js"></script>
    <script type="text/javascript" src="distrib/host/devices.js"></script>
    <script type="text/javascript" src="distrib/host/cpu.js"></script>
+    <script type="text/javascript" src="distrib/host/Memory.js"></script>
 
    <!-- Virtual OS Routines: Make sure Kernel code is last, since it needs those above it. -->
    <script type="text/javascript" src="distrib/os/interrupt.js"></script>
@@ -27,11 +28,13 @@
    <script type="text/javascript" src="distrib/os/shellCommand.js"></script>
    <script type="text/javascript" src="distrib/os/userCommand.js"></script>
    <script type="text/javascript" src="distrib/os/kernel.js"></script>
+    <script type="text/javascript" src="distrib/os/MemoryManager.js"></script>
+    <script type="text/javascript" src="distrib/os/PCB.js"></script>
 
    <!-- Other Routines -->
    <script type="text/javascript" src="distrib/utils.js"></script>
    <!-- Uncomment this line below to enable GLaDOS testing -->
-   <script type="text/javascript" src="http://www.labouseur.com/courses/os/projects/glados.js"></script>
+   <!--script type="text/javascript" src="http://www.labouseur.com/courses/os/projects/glados.js"></script-->
 </head>
 
 <body onload="onDocumentLoad()">
@@ -64,10 +67,26 @@
              value="Reset"
              tabindex="2"
              onclick="TSOS.Control.hostBtnReset_click(this);">
+
+       <input type="button"
+              id = "singleStep"
+              name="singleStep"
+              class="normal_button"
+              value="Single Step Off"
+              tabindex="3"
+              onclick="TSOS.Control.singleStep_click(this);">
+
+       <input type="button"
+              id = "nextButton"
+              name="nextButton"
+              class="normal_button"
+              value="Next Step"
+              tabindex="4"
+              onclick="TSOS.Control.nextStep_click(this);">
    </div>
 
 
-   <div id="divConsole" style="margin:4px; width:500px; height:500px; float:left; overflow:scroll">
+   <div id="divConsole" style="margin:4px; width:500px; height:500px; float:left;">
       <canvas id="display"
               width="500px"
               height="500px"
@@ -76,10 +95,10 @@
     </div>
 
 
-    <div style="margin-left:520px; overflow:scroll">
+    <div style="margin-left:520px;">
         <label>Status</label>
     </div>
-    <div style="margin-left:520px;">
+    <div style="margin-left:520px;overflow:scroll;">
         <textarea id="statusBar" rows="8" cols="48">
            </textarea>
     </div>
@@ -98,7 +117,7 @@
       </label>
    </div>
 
-   <div id="divUserProgramInput" style="margin-left:520px;>">
+   <div id="divUserProgramInput" style="margin-left:520px;">
       <label>
          User Program Input
          <br>
@@ -109,7 +128,39 @@
          ></textarea>
       </label>
    </div>
+    <div id="cpu_Table" style="padding:10px;">
+        <label> CPU</label>
+        <table border="1" id="cpuTable" style="width:300px">
+            <th>PC</th>
+            <th>IR</th>
+            <th>Acc</th>
+            <th>X Reg</th>
+            <th>Y Reg</th>
+            <th>Z Flag</th>
+            <tbody>
+            <td id="pcVal"></td>
+            <td id="irVal"></td>
+            <td id="accVal"></td>
+            <td id="xRegVal"></td>
+            <td id="yRegVal"></td>
+            <td id="zFlagVal"></td>
+            </tbody>
+        </table>
+    </div>
+    <div style="padding : 10px">
+        <label>Memory</label>
+        <div>
+            <table border="1" id="mTable">
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
+
+
+
 
 <p class="footerText" style="clear:both;">
    <br>

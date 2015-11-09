@@ -63,6 +63,10 @@ var TSOS;
             this.commandList[this.commandList.length] = sc;
             sc = new TSOS.ShellCommand(this.shellError, "error", " - displays an error");
             this.commandList[this.commandList.length] = sc;
+            sc = new TSOS.ShellCommand(this.shellRun, "run", "<PID> - Runs user program");
+            this.commandList[this.commandList.length] = sc;
+            sc = new TSOS.ShellCommand(this.shellClearMem, "clearmem", "- Clear memory partition");
+            this.commandList[this.commandList.length] = sc;
             // Display the initial prompt.
             this.putPrompt();
         };
@@ -247,7 +251,7 @@ var TSOS;
                         _StdOut.Text("Displays a status");
                         break;
                     case "load":
-                        _StdOut.Text("");
+                        _StdOut.Text("Loads a program");
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
                 }
@@ -324,24 +328,64 @@ var TSOS;
                 }
             }
         };
-        Shell.prototype.shellLoad = function (args) {
-            var program = _Load.value;
-            var pass = false;
-            var hex = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", " "];
-            for (var i = 0; i < program.length; i++) {
-                if (hex.indexOf(program.charAt(i)) > -1) {
-                    pass = true;
-                }
-            }
-            if (pass) {
-                _StdOut.putText("Program is valid");
-            }
-            else {
-                _StdOut.putText("Program is invalid");
-            }
-        };
         Shell.prototype.shellError = function (args) {
             _Kernel.krnTrapError("error");
+        };
+        Shell.prototype.shellLoad = function (args) {
+            var i = 0;
+            var valid = true;
+            var program = _Load.value.trim();
+            program = program.toUpperCase();
+            while (i < program.length) {
+                var val = program.charAt(i);
+                if (val != 'A' && val != 'B' && val != 'C' && val != 'D' && val != 'E' && val != 'F' && val != '0' &&
+                    val != '1' && val != '2' && val != '3' && val != '4' && val != '5' && val != '6' && val != '7' &&
+                    val != '8' && val != '9' && val != ' ') {
+                    valid = false;
+                }
+                i++;
+            }
+            if (valid == true && program.length != 0) {
+                console.log(_MemTable);
+                var inputText = program.replace(/\n/g, " ").split(" ");
+                console.log(inputText);
+                console.log("Load Complete");
+                _PCB = new TSOS.PCB();
+                _MemMan.fillMemory(inputText);
+                _StdOut.putText("Program loaded, Pid: " + _PCB.pid);
+                _CPU.clearProgram();
+                _StdOut.advanceLine();
+            }
+            else {
+                _StdOut.putText("Input is invalid");
+            }
+        };
+        Shell.prototype.shellRun = function (args) {
+            if (args.length > 0) {
+                if (_Mem.isEmpty()) {
+                    _StdOut.putText('Nothing is in memory. Please try and load program');
+                }
+                else if (args[0] == _PCB.pid) {
+                    _CPU.resetCpu();
+                    _Counter = 0;
+                    _CPU.isExecuting = true;
+                }
+                else {
+                    _StdOut.putText('Please input correct PID');
+                }
+            }
+            else {
+                _StdOut.putText("Input PID");
+            }
+        };
+        Shell.prototype.shellClearMem = function (args) {
+            var counter = 0;
+            for (var i = 0; i < 32; i++) {
+                for (var k = 0; k < 8; k++) {
+                    (document.getElementById(counter.toString())).innerHTML = "00";
+                    counter++;
+                }
+            }
         };
         return Shell;
     })();

@@ -76,10 +76,12 @@ module TSOS {
 
         }
 
-        public scroll(): void{
-            var data = _DrawingContext.getImageData(0,0,_Canvas.width, _Canvas.height);
-            _Canvas.height+=100;
-            _DrawingContext.putImageData(data, 0,0);
+        public scroll():void{
+            var currentScreen = _DrawingContext.getImageData(0,this.currentFontSize+7,_Canvas.width, _Canvas.height);
+            this.clearScreen();
+            this.currentYPosition -= _DefaultFontSize + _DrawingContext.fontDescent(this.currentFont, this.currentFontSize)
+                + _FontHeightMargin;
+            _DrawingContext.putImageData(currentScreen, 0,0);
         }
 
 
@@ -148,14 +150,15 @@ module TSOS {
              * Font descent measures from the baseline to the lowest point in the font.
              * Font height margin is extra spacing between the lines.
              */
-            this.currentYPosition += _DefaultFontSize + 
-                                     _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
-                                     _FontHeightMargin;
+            this.currentYPosition += _DefaultFontSize +
+                _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
+                _FontHeightMargin;
 
             // TODO: Handle scrolling. (iProject 1)
-            if (this.currentYPosition >_Canvas.height) {
+            if(this.currentYPosition >_Canvas.height) {
                 this.scroll();
             }
+
         }
 
         public history(args): void {
